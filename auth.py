@@ -1,14 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required, UserMixin
+from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
+from modules import User  # Import User model here
 
 auth = Blueprint('auth', __name__)
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(150), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
