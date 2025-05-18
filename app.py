@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
@@ -12,11 +12,14 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'auth.login'  # updated for blueprint
 
-# Import routes
-from auth import *
-from homework import *
+# Import and register blueprints
+from auth import auth as auth_blueprint
+from homework import homework as homework_blueprint
+
+app.register_blueprint(auth_blueprint)
+app.register_blueprint(homework_blueprint)
 
 @app.route('/')
 def home():
